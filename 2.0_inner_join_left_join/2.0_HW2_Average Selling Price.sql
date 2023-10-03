@@ -88,14 +88,10 @@ VALUES
 SELECT * FROM UnitsSold;
 
 # [MYSQL]
-select p.product_id ,
-round(sum(u.units*p.price)/sum(u.units), 2) average_price 
-from Prices p
-inner join
-UnitsSold u
-on p.product_id=u.product_id
-and p.start_date <= u.purchase_date
-and u.purchase_date <= p.end_date
-group by p.product_id;
+SELECT P.PRODUCT_ID, IFNULL(ROUND(SUM(U.UNITS * P.PRICE) / SUM(U.UNITS), 2), 0) AS AVERAGE_PRICE
+FROM PRICES P
+LEFT JOIN UNITSSOLD U
+ON P.PRODUCT_ID = U.PRODUCT_ID AND U.PURCHASE_DATE BETWEEN P.START_DATE AND P.END_DATE
+GROUP BY P.PRODUCT_ID;
 
 
